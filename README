@@ -1,0 +1,36 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2219
+
+Limp's goal is to provide a compelling alternative to Slime for Vim. It will let you send s-expressions to a running Lisp.
+
+It will do this for you:
+
+* booting/attaching/detaching a Lisp (SBCL) from Vim or a command-line script, optionally specifying a core;
+* send code to the attached Lisp (and limited introspection, see Help Describe);
+* automatically close brackets;
+* ease s-exp navigation and (some) transposing;
+* highlight current form under the cursor;
+* lookup documentation from the HyperSpec;
+* complete (some) names.
+
+Quickstart (better version with screenshots in the documentation):
+
+In a file with "filetype=lisp" set, hit <F12> to invoke Limp and start a Lisp or connect to an existing.
+Write a piece of code, e.g.:
+
+  (defun hello-world (who)
+    (format t "Hello, ~A!~%" who))
+
+Place the cursor at any location inside the code and type <Leader>et (Evaluate Top) to send your code to the running Lisp.
+
+Hit <F12> again to see the results!  Then, by placing the cursor at hello-world and typing <Leader>hd (Help Describe) followed by <F12>, you'll see information about the symbol!
+
+(Full list of key bindings at http://mikael.jansson.be/hacking/limp/docs/#keyboard-reference )
+
+To test it, type
+
+  :Eval (hello-world '|Limp User|)
+
+followed by <Enter> and <F12>.
+
+More info in the documentation! 
+Uses code from ViLisp (vimscript #221), AutoClose (vimscript #1849), HiMtchBrkt (vimscript #1435)
