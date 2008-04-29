@@ -205,7 +205,7 @@ fun! LimpBridge_boot_or_connect_or_display()
         if what <= 0
             " user didn't want to connect, let's boot!
             let name = input("Name the Lisp: ")
-            if name == "" && a:1 != ""
+            if name == "" && a:0 == 1 && a:1 != ""
                 " give up
                 return
             endif
@@ -423,7 +423,7 @@ endfunction
 function! LimpBridge_hyperspec(type, make_page)
   " get current word under cursor
   let word = expand( "<cword>" )
-  let cmd = "! perl " . s:LimpBridge_location . "/bin/lim-hyperspec.pl"
+  let cmd = "! perl " . s:LimpBridge_location . "/bin/limp-hyperspec.pl"
   let cmd = cmd . " " . a:type . " " . a:make_page . " '" .  word . "'"
   silent! exe cmd
   redraw!

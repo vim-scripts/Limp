@@ -1,28 +1,35 @@
 =============================================
   Limp: When You Need More Than Just A Lisp
 =============================================
-:Author: Mikael Jansson
-:Version: 0.3.1
-:Download: `limp-0.3.1.tar.gz </static/hacking/limp/limp-0.3.1.tar.gz>`_ (April 27th, 2008)
-
-Pre-packaged & welded-together collection of Vim plugins working together for your Lispy desires!  It defaults to `Steel Bank Common Lisp (SBCL) <http://www.sbcl.org>`_.  It is based on ViLisp and other great Vim plugins, and is an attempt at forming a usable Lisp environment for Vim users.
-
-.. While you can't have lengthy conversations with SWANK (yet...), what you *can* do is send code to your Lisp, ask the HyperSpec for documentation, and on top of that, fairly sane bracket-behaviour.
-
-Table of Contents
-==================
-.. image:: /static/hacking/limp/square-wheel.jpg
+.. image:: /static/hacking/limp/crutches-250.png
    :class: rightalignplain
+
+
+:Author: Mikael Jansson
+:Version: 0.3.2
+
+Pre-packaged & welded-together collection of Vim plugins working together for
+your Lispy desires!  It defaults to `Steel Bank Common Lisp (SBCL)
+<http://www.sbcl.org>`_.  It is based on ViLisp and other great Vim plugins,
+and is an attempt at forming a usable Lisp environment for Vim users.
+
+.. While you can't have lengthy conversations with SWANK (yet...), what you
+*can* do is send code to your Lisp, ask the HyperSpec for documentation, and
+on top of that, fairly sane bracket-behaviour.
+
+Limp will do this for you:
+
+* boot/attach/detach a Lisp from Vim or script, optionally specifying a core;
+* automatically close brackets;
+* highlight current form under the cursor;
+* lookup documentation from the HyperSpec;
+* complete names;
+* ...and finally, suck less than manual copy-and-paste!
+
+----
 
 .. contents::
 
-Features
-=========
-* Boot/attach/detach a Lisp from Vim or script, optionally specifying a core.
-* Automatic brackets closing
-* Form highlighting
-* HyperSpec documentation lookup and name completion
-* Sucks less than manual copy-and-paste.
 
 Quickstart
 ============
@@ -95,7 +102,7 @@ Shell
    or from another Vim session.
 
 Freezing and Thawing
---------------------
+~~~~~~~~~~~~~~~~~~~~
 You can save your Lisp's state and later restore it. Very handy.
 
 .. figure:: /static/hacking/limp/docs/screenshots/save-lisp-and-die.png
@@ -307,7 +314,7 @@ Source transformation.
 * ``\ft``: *(Format current Top level form)*: Reindent/format current form to the top level 
 * ``\sw``: *(S-exp Wrap)*: Wrap the current form inside another list
 * ``\sp``: *(S-exp Peel)*: Peel off a list around the current s-exp
-* ``\cc`` :*(S-exp Comment)*: Comment current form
+* ``\sc`` :*(S-exp Comment)*: Comment current form
 
 Limp
 ----
@@ -363,59 +370,57 @@ The following step is not required for using Limp with Vim, but if you're planni
 Note that you probably will want to remove older versions of Lim if you've got
 that installed, and that it's not *LIMP* RUNTIME, not *LIM* RUNTIME
 
-Download
-========
-Current Release
-~~~~~~~~~~~~~~~~
-Version 0.3.1, April 27th, 2008: `limp-0.3.1.tar.gz </static/hacking/limp/limp-0.3.1.tar.gz>`_
-
-Older Releases
-~~~~~~~~~~~~~~
-* `lim-0.3.tar.gz </static/hacking/limp/lim-0.3.tar.gz>`_ (April 27, 2008)
-* `lim-0.2.2.tar.gz </static/hacking/limp/lim-0.2.2.tar.gz>`_ (April 26, 2008)
-* `lim-0.2.1.tar.gz </static/hacking/limp/lim-0.2.1.tar.gz>`_ (April 26, 2008)
-* `lim-0.2.tar.gz </static/hacking/limp/lim-0.2.tar.gz>`_ (April 25, 2008)
-* `lim-0.1.tar.gz </static/hacking/limp/lim-0.1.tar.gz>`_ (April 21, 2008)
-
-
 Changelog
 =========
+Version 0.3.2
+~~~~~~~~~~~~~
+* 2008-04-28 by Mikael Jansson <mail@mikael.jansson.be>
+
+  + **ADDED**: TODO file in the distro.
+  + *FIXED*: Last occurance of "Lim" found in the HyperSpec helper. Now
+    documentation should work properly.
+  + TWEAK: Only change colorscheme and nocompatible when not previously set.
+
+* 2008-04-27 by Mikael Jansson <mail@mikael.jansson.be>
+
+  + *FIXED*: Connect-or-boot, without a name given to boot.
+
 Version 0.3.1
 ~~~~~~~~~~~~~
 * 2008-04-27 by Mikael Jansson <mail@mikael.jansson.be>
 
- + Stray LIMRUNTIME.  Could make Limp connect to the wrong Lisp if both
-   LIMRUNTIME and LIMPRUNTIME was set and pointing at different locations.
+  + *FIXED*: Stray LIMRUNTIME.  Could make Limp connect to the wrong Lisp if both
+    LIMRUNTIME and LIMPRUNTIME was set and pointing at different locations.
 
 Version 0.3
 ~~~~~~~~~~~~~
 * 2008-04-26 by Mikael Jansson <mail@mikael.jansson.be>
 
-  + Optionally specify core at startup and shutdown.
-  + Added "quit Lisp" mapping on Shift-F12 and removed the ``\aq`` mapping.
-  + (Hopefully) fixed lisp.sh to work on OS X and other non-GNU systems. Thanks to Nico Weber for patches!
-  + Renamed Lim to Limp.
+  + **ADDED**: Optionally specify core at startup and shutdown.
+  + **ADDED** Added "quit Lisp" mapping on Shift-F12 and removed the ``\aq`` mapping.
+  + *FIXED*: (Hopefully) fixed lisp.sh to work on OS X and other non-GNU systems. Thanks to Nico Weber for patches!
+  + TWEAK: Renamed Lim to Limp.
 
 Version 0.2.2
 ~~~~~~~~~~~~~
 * 2008-04-26 by Mikael Jansson <mail@mikael.jansson.be>
 
-  + Typo in HyperSpec lookup code
-  + Updated documentation
+  + *FIXED*: Typo in HyperSpec lookup code
+  + TWEAK: Updated documentation
 
 Version 0.2.1
 ~~~~~~~~~~~~~
 * 2008-04-26 by Mikael Jansson <mail@mikael.jansson.be>
 
-  + Fixed copy-paste typo for 'Goto Last'
-  + Better connection status information
+  + *FIXED*: Fixed copy-paste typo for 'Goto Last'
+  + TWEAK: Better connection status information
 
 
 Version 0.2
 ~~~~~~~~~~~
 * 2008-04-25 by Mikael Jansson <mail@mikael.jansson.be>
 
-  Replaced the Perl funnel betwen Vim and Lisp with screen.
+  + **ADDED**: Replaced the Perl funnel betwen Vim and Lisp with screen.
 
 Version 0.1
 ~~~~~~~~~~~
@@ -446,3 +451,4 @@ Charles E. Campbell, Jr.
   For `HiMtchBrkt <http://www.vim.org/scripts/script.php?script_id=1435>`_.
   Modified to highlight the contents inside the brackets, removed Vim (<7.x)
   backward compatibility.
+
