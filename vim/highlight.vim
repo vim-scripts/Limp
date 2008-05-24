@@ -35,15 +35,18 @@
 "
 " ---------------------------------------------------------------------
 " Load Once: {{{1
-if &cp || exists("g:loaded_limp_highlight")
-    finish
-endif
-let g:loaded_limp_highlight = "2008-04-20-lim"
+
 let s:keepcpo = &cpo
 set cpo&vim
 
 " disable matchparen: we do that ourselves.
 let g:loaded_matchparen = 1
+
+" assume that all of the file has been loaded & defined once
+" if one of the functions are defined.
+if exists("*LimpHighlight_start")
+    finish
+endif
 
 fun! LimpHighlight_start()
     if exists("g:limp_highlight_active")
@@ -70,11 +73,15 @@ fun! LimpHighlight_start()
     set lz
     call s:LimpHighlight_handler()
     set nolz
+
 endfun
 
 fun! LimpHighlight_stop()
+    "echom "Stopping highlight"
     set lz
-    unlet g:limp_highlight_active
+    if exists("g:limp_highlight_active")
+        unlet g:limp_highlight_active
+    endif
     match none
     2match none
  
@@ -223,30 +230,7 @@ fun! s:PerformMatch(line1, col1, line2, col2)
     exe 'match Brackets /\%'.line1.'l\%'.col1.'v\|\%'.line2.'l\%'.col2.'v/'
 endfun
 
-let g:lisp_rainbow=1
-
-"
-" set all parens to gray
-"
-hi hlLevel0 ctermfg=238
-hi hlLevel1 ctermfg=238
-hi hlLevel2 ctermfg=238
-hi hlLevel3 ctermfg=238
-hi hlLevel4 ctermfg=238
-hi hlLevel5 ctermfg=238
-hi hlLevel6 ctermfg=238
-hi hlLevel7 ctermfg=238
-hi hlLevel8 ctermfg=238
-hi hlLevel9 ctermfg=238
-hi hlLevel10 ctermfg=238
-hi hlLevel11 ctermfg=238
-
-" ---------------------------------------------------------------------
-"  Auto Startup With LimpHighlight: {{{1
-if exists("g:LimpHighlight") && g:LimpHighlight == 1
-    call LimpHighlight_start()
-endif
-
 let &cpo = s:keepcpo
 unlet s:keepcpo
+
 

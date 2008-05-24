@@ -35,26 +35,21 @@
 "-------------------------------------------------------------------
 " startup
 "-------------------------------------------------------------------
-if exists( "g:limp_bridge_loaded" )
-  finish
-else
-  let g:limp_bridge_loaded = 1
-endif
-
 " only do these things once
 
+let s:Limp_location = expand("$LIMPRUNTIME")
+
 " prefix for the pipe used for communication
-let g:limp_bridge_channel_base = $HOME . "/.limp_bridge_channel-"
+let s:limp_bridge_channel_base = $HOME . "/.limp_bridge_channel-"
 let s:limp_bridge_connected=0
-let s:LimpBridge_location = expand("$LIMPRUNTIME")
-exe "set complete+=s" . s:LimpBridge_location . "/vim/thesaurus"
+exe "setlocal complete+=s" . s:Limp_location . "/vim/thesaurus"
 
 "-------------------------------------------------------------------
 " talk to multiple Lisps using LimpBridge_connect()
 "-------------------------------------------------------------------
 fun! LimpBridge_complete_lisp(A,L,P)
-    let prefix = g:limp_bridge_channel_base
-    echom "ls -1 ".prefix."*"
+    let prefix = s:limp_bridge_channel_base
+    "echom "ls -1 ".prefix."*"
     let output = system("ls -1 ".prefix."*")
     if stridx(output, prefix."*") >= 0
         echom "No Lisps started yet?"
@@ -88,15 +83,15 @@ fun! LimpBridge_connect(...)
         let fullname = a:1[stridx(a:1, '.')+1:]
         let name = fullname[strlen("limp_listener-"):]
 
-        let g:limp_bridge_channel = g:limp_bridge_channel_base.name.".".pid
+        let s:limp_bridge_channel = s:limp_bridge_channel_base.name.".".pid
     else
-        let g:limp_bridge_channel = g:limp_bridge_channel_base
+        let s:limp_bridge_channel = s:limp_bridge_channel_base
         let name = input("Connect to [boot new]: ", "", "customlist,LimpBridge_complete_lisp")
         if name == ""
             return -1
         endif
-        let g:limp_bridge_channel .= name
-        if 0 == filewritable(g:limp_bridge_channel) "|| g:limp_bridge_channel = g:limp_bridge_channel_base
+        let s:limp_bridge_channel .= name
+        if 0 == filewritable(s:limp_bridge_channel) "|| s:limp_bridge_channel = s:limp_bridge_channel_base
             echom "Not a Limp channel."
             return 0
         endif
@@ -105,35 +100,35 @@ fun! LimpBridge_connect(...)
     " (backward from screen sty naming to ease tab completion)
     
     " bridge id is the file used for communication between Vim and screen
-    let g:limp_bridge_id = strpart(g:limp_bridge_channel, strlen(g:limp_bridge_channel_base))
+    let s:limp_bridge_id = strpart(s:limp_bridge_channel, strlen(s:limp_bridge_channel_base))
 
     " bridge screenid is the screen in which the Lisp is running
-    let g:limp_bridge_screenid = g:limp_bridge_id[strridx(g:limp_bridge_id, '.')+1:]
-    "let g:limp_bridge_scratch = $HOME . "/.limp_bridge_scratch-" . g:limp_bridge_id
-    let g:limp_bridge_test = $HOME . '/.limp_bridge_test-' . g:limp_bridge_id
+    let s:limp_bridge_screenid = s:limp_bridge_id[strridx(s:limp_bridge_id, '.')+1:]
+    "let s:limp_bridge_scratch = $HOME . "/.limp_bridge_scratch-" . s:limp_bridge_id
+    let s:limp_bridge_test = $HOME . '/.limp_bridge_test-' . s:limp_bridge_id
 
-    silent exe "new" g:limp_bridge_channel
-        if exists( "#BufRead#*.lsp#" )
-            doauto BufRead x.lsp
+    silent exe "new" s:limp_bridge_channel
+        if exists( "#BufEnter#*.lisp#" )
+            doauto BufEnter x.lisp
         endif
-        set syntax=lisp
+        setlocal syntax=lisp
         " XXX: in ViLisp, buftype=nowrite, but w/ limp_bridge_channel, vim
         " complains about the file being write-only.
-        "set buftype=nowrite
-        set bufhidden=hide
-        set nobuflisted
-        set noswapfile
+        "setlocal buftype=nowrite
+        setlocal bufhidden=hide
+        setlocal nobuflisted
+        setlocal noswapfile
     hide
 
-    silent exe "new" g:limp_bridge_test
-        if exists( "#BufRead#*.lsp#" )
-            doauto BufRead x.lsp
+    silent exe "new" s:limp_bridge_test
+        if exists( "#BufEnter#*.lisp#" )
+            doauto BufEnter x.lisp
         endif
-        set syntax=lisp
-        " set buftype=nofile
-        set bufhidden=hide
-        set nobuflisted
-        " set noswapfile
+        setlocal syntax=lisp
+        " setlocal buftype=nofile
+        setlocal bufhidden=hide
+        setlocal nobuflisted
+        " setlocal noswapfile
     hide
 
     " hide from the user that we created and deleted (hid, really) a couple of
@@ -143,14 +138,14 @@ fun! LimpBridge_connect(...)
 
     let s:limp_bridge_connected=1
 
-    echom "Welcome to Lim. May your journey be pleasant."
+    echom "Welcome to Limp. May your journey be pleasant."
 
     return 1
 endfun
 
 fun! LimpBridge_connection_status()
     if s:limp_bridge_connected == 1
-        return "Connected to ".g:limp_bridge_id
+        return "Connected to ".s:limp_bridge_id
     else
         return "Disconnected"
     endif
@@ -158,7 +153,7 @@ endfun
 
 fun! LimpBridge_disconnect()
     let s:limp_bridge_connected = 0
-    let g:limp_bridge_id = "<disconnected>"
+    let s:limp_bridge_id = "<disconnected>"
 endfun
 
 "
@@ -169,10 +164,10 @@ fun! LimpBridge_quit_lisp(...)
     if a:0 == 1 && a:1 != ""
         let core = a:1
         call LimpBridge_send_to_lisp("(sb-ext:save-lisp-and-die \"".core."\")\n")
-        echom "Lisp ".g:limp_bridge_id." is gone, core saved to ".core."."
+        echom "Lisp ".s:limp_bridge_id." is gone, core saved to ".core."."
     else
         call LimpBridge_send_to_lisp("(sb-ext:quit)\n")
-        echom "Lisp ".g:limp_bridge_id." is gone."
+        echom "Lisp ".s:limp_bridge_id." is gone."
     endif
     call LimpBridge_disconnect()
 endfun
@@ -193,19 +188,26 @@ fun! LimpBridge_boot_or_connect_or_display()
     if s:limp_bridge_connected
         " is it still running?
         let status = system("screen -ls")
-        if stridx(status, g:limp_bridge_screenid) == -1
+        if stridx(status, s:limp_bridge_screenid) == -1
             call LimpBridge_disconnect()
             return
         endif
-        let cmd = "screen -x ".g:limp_bridge_screenid
+        let cmd = "screen -x ".s:limp_bridge_screenid
+        if has("gui_running") || b:listener_always_open_window == 1
+            let cmd = "xterm -e " . cmd
+            if b:listener_keep_open == 1
+                let cmd .= " &"
+            endif
+        endif
         silent exe "!".cmd
         redraw!
     else
+        " connect to a fresh Lisp
         let what = LimpBridge_connect()
         if what <= 0
             " user didn't want to connect, let's boot!
             let name = input("Name the Lisp: ")
-            if name == "" && a:0 == 1 && a:1 != ""
+            if strlen(name) == 0 
                 " give up
                 return
             endif
@@ -226,13 +228,69 @@ endfun
 
 augroup LimpBridge
     au!
-    autocmd BufLeave .LimpBridge_* set nobuflisted
-    autocmd BufLeave *.lsp,*.lisp let g:limp_bridge_last_lisp = bufname( "%" )
+    autocmd BufLeave .LimpBridge_* setlocal nobuflisted
+    autocmd BufLeave *.lisp let g:limp_bridge_last_lisp = bufname( "%" )
 augroup END
+
+
+"-------------------------------------------------------------------
+" plugin <-> function mappings
+"-------------------------------------------------------------------
+
+nnoremap <buffer> <unique> <Plug>LimpBootConnectDisplay  :call LimpBridge_boot_or_connect_or_display()<CR>
+nnoremap <buffer> <unique> <Plug>LimpDisconnect          :call LimpBridge_disconnect()<CR>
+nnoremap <buffer> <unique> <Plug>LimpShutdownLisp        :call LimpBridge_shutdown_lisp()<CR>
+
+nnoremap <buffer> <unique> <Plug>EvalTop        :call LimpBridge_eval_top_form()<CR>
+nnoremap <buffer> <unique> <Plug>EvalCurrent    :call LimpBridge_eval_current_form()<CR>
+nnoremap <buffer> <unique> <Plug>EvalExpression :call LimpBridge_prompt_eval_expression()<CR>
+
+vnoremap <buffer> <unique> <Plug>EvalBlock      :call LimpBridge_eval_block()<cr>
+
+nnoremap <buffer> <unique> <Plug>AbortReset     :call LimpBridge_send_to_lisp( "ABORT\n" )<CR>
+nnoremap <buffer> <unique> <Plug>AbortInterrupt :call LimpBridge_send_to_lisp( "" )<CR>
+
+nnoremap <buffer> <unique> <Plug>TestCurrent    :call  LimpBridge_stuff_current_form()<CR>
+nnoremap <buffer> <unique> <Plug>TestTop        :call  LimpBridge_stuff_top_form()<CR>
+
+nnoremap <buffer> <unique> <Plug>LoadThisFile    :call LimpBridge_send_to_lisp( "(load \"" . expand( "%:p" ) . "\")\n")<CR>
+nnoremap <buffer> <unique> <Plug>LoadAnyFile     :call LimpBridge_send_to_lisp( "(load \"" . expand( "%:p:r" ) . "\")\n")<CR>
+
+nnoremap <buffer> <unique> <Plug>CompileFile        :w! <bar> call LimpBridge_send_to_lisp("(compile-file \"".expand("%:p")."\")\n")<CR>
+
+" XXX: What's the proprer syntax for calling >1 Plug?
+""nnoremap <buffer> <unique> <Plug>CompileAndLoadFile <Plug>CompileFile <bar> <Plug>LoadAnyFile
+nnoremap <buffer> <unique> <Plug>CompileAndLoadFile   :w! <bar> call LimpBridge_send_to_lisp("(compile-file \"".expand("%:p")."\")\n") <bar> call LimpBridge_send_to_lisp( "(load \"" . expand( "%:p:r" ) . "\")\n")<CR>
+
+" Goto Test Buffer:
+" Goto Split:         split current buffer and goto test buffer
+nnoremap <buffer> <unique> <Plug>GotoTestBuffer           :call LimpBridge_goto_buffer_or_window(g:limp_bridge_test)<CR>
+nnoremap <buffer> <unique> <Plug>GotoTestBufferAndSplit   :sb <bar> call LimpBridge_goto_buffer_or_window(g:limp_bridge_test)<CR>
+
+" Goto Last:          return to g:limp_bridge_last_lisp, i.e. last buffer
+nnoremap <buffer> <unique> <Plug>GotoLastLispBuffer   :call LimpBridge_goto_buffer_or_window(g:limp_bridge_last_lisp)<CR>
+
+" HyperSpec:
+nnoremap <buffer> <unique> <Plug>HyperspecExact    :call LimpBridge_hyperspec("exact", 0)<CR>
+nnoremap <buffer> <unique> <Plug>HyperspecPrefix   :call LimpBridge_hyperspec("prefix", 1)<CR>
+nnoremap <buffer> <unique> <Plug>HyperspecSuffix   :call LimpBridge_hyperspec("suffix", 1)<CR>
+nnoremap <buffer> <unique> <Plug>HyperspecGrep             :call LimpBridge_hyperspec("grep", 1)<CR>
+nnoremap <buffer> <unique> <Plug>HyperspecFirstLetterIndex :call LimpBridge_hyperspec("index", 0)<CR>
+nnoremap <buffer> <unique> <Plug>HyperspecFullIndex   :call LimpBridge_hyperspec("index-page", 0)<CR>
+
+" Help Describe:      ask Lisp about the current symbol
+nnoremap <buffer> <unique> <Plug>HelpDescribe   :call LimpBridge_send_to_lisp("(describe '".expand("<cword>").")")<CR>
+
 
 "-------------------------------------------------------------------
 " library
 "-------------------------------------------------------------------
+" assume that all of the file has been loaded & defined once
+" if one of the functions are defined.
+if exists("*LimpBridge_goto_buffer_or_window")
+    finish
+endif
+
 function! LimpBridge_goto_buffer_or_window( buff )
   if -1 == bufwinnr( a:buff )
     exe "hide bu" a:buff
@@ -331,7 +389,7 @@ function! LimpBridge_send_to_lisp( sexp )
 
   " goto LimpBridge_channel, delete it, put s-exp, write it to lisp
   try
-      exe "hide bu" g:limp_bridge_channel
+      exe "hide bu" s:limp_bridge_channel
       exe "%d"
       normal! 1G
 
@@ -342,7 +400,7 @@ function! LimpBridge_send_to_lisp( sexp )
       let @l = old_l
 
       silent exe 'w!'
-      call system('screen -x '.g:limp_bridge_screenid.' -p 0 -X eval "readbuf" "paste ."')
+      call system('screen -x '.s:limp_bridge_screenid.' -p 0 -X eval "readbuf" "paste ."')
   catch /^Vim:E211:/
       echom "Lisp is gone!"
       " file not available, Lisp disappeared
@@ -404,7 +462,7 @@ function! LimpBridge_stuff_current_form()
 
   " find & yank current s-exp
   normal! [(
-  call LimpBridge_send_sexp_to_buffer( LimpBridge_yank( "%" ), g:limp_bridge_test )
+  call LimpBridge_send_sexp_to_buffer( LimpBridge_yank( "%" ), s:limp_bridge_test )
 
   call LimpBridge_goto_pos( pos )
 endfunction
@@ -415,7 +473,7 @@ function! LimpBridge_stuff_top_form()
 
   " find & yank top-level s-exp
   silent! exec "normal! 99[("
-  call LimpBridge_send_sexp_to_buffer( LimpBridge_yank( "%" ), g:limp_bridge_test )
+  call LimpBridge_send_sexp_to_buffer( LimpBridge_yank( "%" ), s:limp_bridge_test )
 
   call LimpBridge_goto_pos( pos )
 endfunction
@@ -423,7 +481,7 @@ endfunction
 function! LimpBridge_hyperspec(type, make_page)
   " get current word under cursor
   let word = expand( "<cword>" )
-  let cmd = "! perl " . s:LimpBridge_location . "/bin/limp-hyperspec.pl"
+  let cmd = "! perl " . s:Limp_location . "/bin/limp-hyperspec.pl"
   let cmd = cmd . " " . a:type . " " . a:make_page . " '" .  word . "'"
   silent! exe cmd
   redraw!

@@ -30,10 +30,7 @@
 "
 
 " Load Once: {{{1
-if &cp || exists("g:loaded_cursor")
- finish
-endif
-let g:loaded_cursor = "2008-04-18-limp"
+
 let s:keepcpo        = &cpo
 set cpo&vim
 
@@ -41,6 +38,13 @@ set cpo&vim
 "  Public Interface: {{{1
 " -----------------------
 let s:modifier= "sil keepj "
+
+
+" assume that all of the file has been loaded & defined once
+" if one of the functions are defined.
+if exists("*Cursor_get")
+    finish
+endif
 
 " Cursor_get: {{{1
 " Return the current cursor (as an executable command!)

@@ -41,11 +41,7 @@
 "           released the first as 1.0, April 3, 2007
 
 " Setup -----------------------------------------------------{{{1
-if exists('g:autoclose_loaded') || &cp
-    finish
-endif
 
-let g:autoclose_loaded = 1
 let s:omni_active = 0
 let s:cotstate = &completeopt
 
@@ -53,6 +49,13 @@ if !exists('g:autoclose_on')
     let g:autoclose_on = 0
 endif
 
+" assume everything has been defined already if one of the functions are
+" defined.
+if exists("*AutoClose_start")
+    finish
+endif
+
+if !exists("*AutoClose_stop")
 fun! AutoClose_stop()
     if g:autoclose_on
         iunmap "
@@ -69,7 +72,9 @@ fun! AutoClose_stop()
         let g:autoclose_on = 0
     endif
 endfun
+endif
 
+if !exists("*AutoClose_start")
 fun! AutoClose_start()
     if !g:autoclose_on
         inoremap <silent> " <C-R>=<SID>QuoteDelim('"')<CR>
@@ -85,10 +90,12 @@ fun! AutoClose_start()
         inoremap <silent> <C-[> <C-R>=<SID>CloseStackPop('')<CR><C-[>
         let g:autoclose_on = 1
     endif
-endf
+endfunction
+endif
 let s:closeStack = []
 
 " AutoClose Utilities -----------------------------------------{{{1
+if !exists("*<SID>OpenSpecial")
 function <SID>OpenSpecial(ochar,cchar) " ---{{{2
     let line = getline('.')
     let col = col('.') - 2
@@ -102,45 +109,51 @@ function <SID>OpenSpecial(ochar,cchar) " ---{{{2
     endif
     return a:ochar.<SID>CloseStackPush(a:cchar)
 endfunction
+endif
 
+if !exists("*<SID>CloseStackPush")
 function <SID>CloseStackPush(char) " ---{{{2
-    echom "push"
+    "echom "push"
     let line = getline('.')
     let col = col('.')-2
     if (col) < 0
         call setline('.',a:char.line)
     else
-        echom string(col).':'.line[:(col)].'|'.line[(col+1):]
+        "echom string(col).':'.line[:(col)].'|'.line[(col+1):]
         call setline('.',line[:(col)].a:char.line[(col+1):])
     endif
     call insert(s:closeStack, a:char)
-    echom join(s:closeStack,'').' -- '.a:char
+    "echom join(s:closeStack,'').' -- '.a:char
     return ''
-endf
+endfunction
+endif
 
+if !exists("*<SID>CloseStackPop")
 function <SID>CloseStackPop(char) " ---{{{2
-    echom "pop"
+    "echom "pop"
     if len(s:closeStack) == 0
         return a:char
     endif
     let popped = ''
     let lastpop = ''
-    echom join(s:closeStack,'').' || '.lastpop
+    "echom join(s:closeStack,'').' || '.lastpop
     while len(s:closeStack) > 0 && ((lastpop == '' && popped == '') || lastpop != a:char)
         let lastpop = remove(s:closeStack,0)
         let popped .= lastpop
-        echom join(s:closeStack,'').' || '.lastpop.' || '.popped
+        "echom join(s:closeStack,'').' || '.lastpop.' || '.popped
     endwhile
-    echom ' --> '.popped
+    "echom ' --> '.popped
     let col = col('.') - 2
     let line = getline('.')
     let splits = split(line[:col],popped,1)
-    echom string(splits)
-    echom col.' '.line[(col+2):].' '.popped
+    "echom string(splits)
+    "echom col.' '.line[(col+2):].' '.popped
     call setline('.',join(splits,popped).line[(col+strlen(popped)+1):])
     return popped
-endf
+endfunction
+endif
 
+if !exists("*<SID>QuoteDelim")
 function <SID>QuoteDelim(char) " ---{{{2
   let line = getline('.')
   let col = col('.')
@@ -154,14 +167,19 @@ function <SID>QuoteDelim(char) " ---{{{2
     "Starting a string
     return a:char."\<C-R>=".s:SID()."CloseStackPush(\"\\".a:char."\")\<CR>"
   endif
-endf
+endfunction
+endif
 
 " The strings returned from QuoteDelim aren't in scope for <SID>, so I
 " have to fake it using this function (from the Vim help, but tweaked)
+"
+if !exists("*s:SID")
 function s:SID()
     return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID$')
 endfun
+endif
 
+if !exists("*<SID>OpenCloseBackspace")
 function <SID>OpenCloseBackspace() " ---{{{2
     "if pumvisible()
     "    pclose
@@ -186,9 +204,5 @@ function <SID>OpenCloseBackspace() " ---{{{2
         endif
     "endif
 endf
-
-" Initialization ----------------------------------------{{{1
-if g:autoclose_on
-    let g:autoclose_on = 0
-    silent call AutoClose_start()
 endif
+
