@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>Limp: When You Need More Than Just A Lisp</title>
+<meta name="date" content="2008-06-08" />
+<meta name="author" content="Mikael Jansson &lt;mail&#64;mikael.jansson.be&gt;" />
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 5196 2007-06-03 20:25:28Z wiemann $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left {
+  clear: left }
+
+img.align-right {
+  clear: right }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="limp-when-you-need-more-than-just-a-lisp">
+<h1 class="title">Limp: When You Need More Than Just A Lisp</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="field"><th class="docinfo-name">Web:</th><td class="field-body"><div class="first last line-block">
+<div class="line"><a class="reference external" href="http://www.vim.org/scripts/script.php?script_id=2219">Download Limp</a> (Vim.org)</div>
+<div class="line"><a class="reference external" href="http://mikael.jansson.be/hacking/limp">Limp Issues and Documentation</a> (Mikael.Jansson.be)</div>
+<div class="line"><a class="reference external" href="http://groups.google.com/group/limp-devel">Limp Development</a> (Google Groups)</div>
+</div>
+</td>
+</tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>2008-06-08</td></tr>
+<tr><th class="docinfo-name">Author:</th>
+<td>Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;</td></tr>
+</tbody>
+</table>
+<img alt="limp.png" class="rightalignplain" src="limp.png" />
+<!-- Limp is a filetype plugin for Vim that lets you interact with a running Lisp (SBCL). -->
+<hr class="docutils" />
+<p><em>Limp's goal is to provide a compelling alternative to SLIME for Vim.</em></p>
+<p>Features include:</p>
+<ul class="simple">
+<li>booting/attaching/detaching a Lisp (SBCL) from Vim or a command-line script, optionally specifying a core;</li>
+<li>send code to the attached Lisp (and limited introspection, see <em>Help Describe</em>);</li>
+<li>automatically close brackets;</li>
+<li>ease s-exp navigation and (some) transposing;</li>
+<li>highlight current form under the cursor;</li>
+<li>lookup documentation from the HyperSpec;</li>
+<li>complete (some) names.</li>
+</ul>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="auto-toc simple">
+<li><a class="reference internal" href="#what-s-new-in-0-3-4" id="id1">1&nbsp;&nbsp;&nbsp;What's New in 0.3.4?</a></li>
+<li><a class="reference internal" href="#installation" id="id2">2&nbsp;&nbsp;&nbsp;Installation</a><ul class="auto-toc">
+<li><a class="reference internal" href="#upgrading-from-0-3-2-and-earlier" id="id3">2.1&nbsp;&nbsp;&nbsp;Upgrading from 0.3.2 and earlier</a></li>
+<li><a class="reference internal" href="#dependencies" id="id4">2.2&nbsp;&nbsp;&nbsp;Dependencies</a></li>
+<li><a class="reference internal" href="#automatic-installation" id="id5">2.3&nbsp;&nbsp;&nbsp;Automatic Installation</a></li>
+<li><a class="reference internal" href="#manual-installation" id="id6">2.4&nbsp;&nbsp;&nbsp;Manual Installation</a></li>
+<li><a class="reference internal" href="#optional" id="id7">2.5&nbsp;&nbsp;&nbsp;Optional</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quickstart" id="id8">3&nbsp;&nbsp;&nbsp;Quickstart</a><ul class="auto-toc">
+<li><a class="reference internal" href="#shell" id="id9">3.1&nbsp;&nbsp;&nbsp;Shell</a></li>
+<li><a class="reference internal" href="#freezing-and-thawing" id="id10">3.2&nbsp;&nbsp;&nbsp;Freezing and Thawing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#usage" id="id11">4&nbsp;&nbsp;&nbsp;Usage</a><ul class="auto-toc">
+<li><a class="reference internal" href="#documentation-lookup" id="id12">4.1&nbsp;&nbsp;&nbsp;Documentation Lookup</a></li>
+<li><a class="reference internal" href="#completion" id="id13">4.2&nbsp;&nbsp;&nbsp;Completion</a></li>
+<li><a class="reference internal" href="#commands" id="id14">4.3&nbsp;&nbsp;&nbsp;Commands</a></li>
+<li><a class="reference internal" href="#keyboard-reference" id="id15">4.4&nbsp;&nbsp;&nbsp;Keyboard Reference</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#changelog" id="id16">5&nbsp;&nbsp;&nbsp;Changelog</a><ul class="auto-toc">
+<li><a class="reference internal" href="#version-0-3-3" id="id17">5.1&nbsp;&nbsp;&nbsp;Version 0.3.3</a></li>
+<li><a class="reference internal" href="#version-0-3-2" id="id18">5.2&nbsp;&nbsp;&nbsp;Version 0.3.2</a></li>
+<li><a class="reference internal" href="#version-0-3-1" id="id19">5.3&nbsp;&nbsp;&nbsp;Version 0.3.1</a></li>
+<li><a class="reference internal" href="#version-0-3" id="id20">5.4&nbsp;&nbsp;&nbsp;Version 0.3</a></li>
+<li><a class="reference internal" href="#version-0-2-2" id="id21">5.5&nbsp;&nbsp;&nbsp;Version 0.2.2</a></li>
+<li><a class="reference internal" href="#version-0-2-1" id="id22">5.6&nbsp;&nbsp;&nbsp;Version 0.2.1</a></li>
+<li><a class="reference internal" href="#version-0-2" id="id23">5.7&nbsp;&nbsp;&nbsp;Version 0.2</a></li>
+<li><a class="reference internal" href="#version-0-1" id="id24">5.8&nbsp;&nbsp;&nbsp;Version 0.1</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#known-issues" id="id25">6&nbsp;&nbsp;&nbsp;Known Issues</a></li>
+<li><a class="reference internal" href="#authors" id="id26">7&nbsp;&nbsp;&nbsp;Authors</a><ul class="auto-toc">
+<li><a class="reference internal" href="#includes-work-by" id="id27">7.1&nbsp;&nbsp;&nbsp;Includes Work By</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="what-s-new-in-0-3-4">
+<h1><a class="toc-backref" href="#id1">1&nbsp;&nbsp;&nbsp;What's New in 0.3.4?</a></h1>
+<ul class="simple">
+<li>Lisp listener shown at boot time.</li>
+<li>Features:<ul>
+<li><a class="reference external" href="http://mikael.jansson.be/hacking/limp/ticket/21">#21 (,) to navigate, {,} to transpose</a>
+(see <a class="reference internal" href="#s-exp-manipulation">S-Exp Manipulation</a> for more info)</li>
+<li><a class="reference external" href="http://mikael.jansson.be/hacking/limp/ticket/20">#20 Proper installer</a>
+(see <a class="reference internal" href="#installation">Installation</a> for more info)</li>
+</ul>
+</li>
+<li>Fixes:<ul>
+<li><a class="reference external" href="http://mikael.jansson.be/hacking/limp/ticket/15">#15 Mappings set twice when switching from Lisp to non-Lisp to Lisp buffer</a></li>
+<li><a class="reference external" href="http://mikael.jansson.be/hacking/limp/ticket/16">#16 Have Vim decide the $STY-file</a></li>
+<li><a class="reference external" href="http://mikael.jansson.be/hacking/limp/ticket/19">#19 EvalTop on noname buffer gives error messages</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h1><a class="toc-backref" href="#id2">2&nbsp;&nbsp;&nbsp;Installation</a></h1>
+<div class="section" id="upgrading-from-0-3-2-and-earlier">
+<h2><a class="toc-backref" href="#id3">2.1&nbsp;&nbsp;&nbsp;Upgrading from 0.3.2 and earlier</a></h2>
+<p>Limp is now a filetype plugin.  If you're using 0.3.2 or earlier, you need to
+remove your old installation of Limp, i.e.:</p>
+<pre class="literal-block">
+$ rm -rf ~/.vim/plugin/limp.vim
+$ rm -rf ~/.vim/limp
+</pre>
+<p>then proceed with the installation as described below.</p>
+</div>
+<div class="section" id="dependencies">
+<h2><a class="toc-backref" href="#id4">2.2&nbsp;&nbsp;&nbsp;Dependencies</a></h2>
+<p>Limp relies on a few application and packages.</p>
+<ul class="simple">
+<li>Vim7.x with +eval</li>
+<li>SBCL</li>
+<li>rlwrap for SBCL command-line editing</li>
+<li>UNIX SCREEN for SBCL communication</li>
+<li>The Common Lisp Hyperspec for the For the Lisp thesaurus</li>
+<li>Perl for generating the Lisp thesaurus</li>
+</ul>
+<p>These are easily installable on Debian-based systems such as Ubuntu:</p>
+<pre class="literal-block">
+$ sudo aptitude install vim-full sbcl hyperspec rlwrap screen perl
+</pre>
+</div>
+<div class="section" id="automatic-installation">
+<h2><a class="toc-backref" href="#id5">2.3&nbsp;&nbsp;&nbsp;Automatic Installation</a></h2>
+<p>Unpack the archive, change to the newly created directory and run the
+installation script:</p>
+<pre class="literal-block">
+$ sudo ./install.sh
+</pre>
+<p>This will install Limp in <tt class="docutils literal"><span class="pre">/usr/local/limp/0.3.4</span></tt>, symlink it to <tt class="docutils literal"><span class="pre">latest</span></tt>
+in the same directory, and finally make a symlink in your Vim configuration
+directory's <tt class="docutils literal"><span class="pre">ftplugin/lisp</span></tt> (creating it if it doesn't
+already exist) pointing to <tt class="docutils literal"><span class="pre">latest</span></tt> Limp.</p>
+</div>
+<div class="section" id="manual-installation">
+<h2><a class="toc-backref" href="#id6">2.4&nbsp;&nbsp;&nbsp;Manual Installation</a></h2>
+<p>Unless installed in <tt class="docutils literal"><span class="pre">/usr/local/limp/0.3.4</span></tt>, Limp needs to have the variable
+<tt class="docutils literal"><span class="pre">$LIMPRUNTIME</span></tt> pointing to the base directory, so add this to your
+<tt class="docutils literal"><span class="pre">~/.bash_profile</span></tt> (or equivalent settings file for your shell):</p>
+<pre class="literal-block">
+export LIMPRUNTIME=/path/to/limp/0.3.4
+</pre>
+<p>Place 0.3.4 in the directory pointed out by <tt class="docutils literal"><span class="pre">$LIMPRUNTIME</span></tt> and setup the
+following symlinks:</p>
+<pre class="literal-block">
+$ ln -sf $LIMPRUNTIME/vim $HOME/.vim/ftplugin/lisp/limp
+$ ln -sf limp/limp.vim $HOME/.vim/ftplugin/lisp/limp.vim
+</pre>
+<p>Finally, generate the Lisp thesaurus:</p>
+<pre class="literal-block">
+$ cd $LIMPRUNTIME/bin
+$ ./make-thesaurus.sh
+</pre>
+</div>
+<div class="section" id="optional">
+<h2><a class="toc-backref" href="#id7">2.5&nbsp;&nbsp;&nbsp;Optional</a></h2>
+<p>I've included a nifty color scheme, for 256-color-capable terminals:
+<tt class="docutils literal"><span class="pre">0.3.4/vim/desert256.vim</span></tt>. Copy it to your <tt class="docutils literal"><span class="pre">$HOME/.vim/colors</span></tt> directory.</p>
+<p>If you're planning on using the command line tool <tt class="docutils literal"><span class="pre">lisp.sh</span></tt> to
+list/boot/connect to Lisp listeners outside of Vim, make a symlink like this:</p>
+<pre class="literal-block">
+$ ln -sf /usr/local/limp/0.3.4/bin/lisp.sh /usr/local/bin
+</pre>
+</div>
+</div>
+<div class="section" id="quickstart">
+<h1><a class="toc-backref" href="#id8">3&nbsp;&nbsp;&nbsp;Quickstart</a></h1>
+<p>This should get you going with Limp!</p>
+<div class="figure">
+<img alt="screenshots/disconnected.png" src="screenshots/disconnected.png" />
+<p class="caption">Vim started with a simple hello-world program.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/connecting.png" src="screenshots/connecting.png" />
+<p class="caption">Press <tt class="docutils literal"><span class="pre">&lt;F12&gt;</span></tt> and Enter to start a new Lisp.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/listener.png" src="screenshots/listener.png" />
+<p class="caption">Press <tt class="docutils literal"><span class="pre">&lt;F12&gt;</span></tt> again to go to the listener.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/sending-code.png" src="screenshots/sending-code.png" />
+<p class="caption">Press  <tt class="docutils literal"><span class="pre">&lt;F12&gt;</span></tt> to return to Vim.</p>
+<div class="legend">
+Move the cursor somewhere inside the form and press <tt class="docutils literal"><span class="pre">\et</span></tt> <em>(Evaluate Top
+form)</em>. The function definition will be sent to the running Lisp.</div>
+</div>
+<div class="figure">
+<img alt="screenshots/listener-with-defun.png" src="screenshots/listener-with-defun.png" />
+<p class="caption">Looking at the listener, you see that the code you just sent has been
+compiled.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/highlighting-current-form.png" src="screenshots/highlighting-current-form.png" />
+<p class="caption">Let's add more code inside the function definition.  With the cursor
+in the middle of the newly added form, you can now press <tt class="docutils literal"><span class="pre">\ec</span></tt> <em>(Evaluate
+Current form)</em> to send only what's currently highlighted.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/evaluating-current-form.png" src="screenshots/evaluating-current-form.png" />
+<p class="caption">And here you can see the results.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/evaluate-prompt.png" src="screenshots/evaluate-prompt.png" />
+<p class="caption">We can also evaluate arbitrary expressions, such as looking at a symbol,
+using <tt class="docutils literal"><span class="pre">\ex</span></tt> <em>(Evaluate eXpression)</em> and typing something at the prompt,
+followed by enter to send it.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/expression-sent.png" src="screenshots/expression-sent.png" />
+<p class="caption">Yes, it is indeed a symbol.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/defun-with-documentation.png" src="screenshots/defun-with-documentation.png" />
+<p class="caption">Let's remove that extra line of code in the function, and add a docstring
+describing the function. Send the definition to Lisp with <tt class="docutils literal"><span class="pre">\et</span></tt>.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/describe-symbol.png" src="screenshots/describe-symbol.png" />
+<p class="caption">With the cursor on the word <tt class="docutils literal"><span class="pre">say-hello</span></tt>, we now press <tt class="docutils literal"><span class="pre">\hd</span></tt> <em>(Help
+Describe)</em> to get detailed information from Lisp about the symbol.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/describe-results.png" src="screenshots/describe-results.png" />
+<p class="caption">This is what our Lisp believes <tt class="docutils literal"><span class="pre">SAY-HELLO</span></tt> to be.</p>
+</div>
+<div class="section" id="shell">
+<h2><a class="toc-backref" href="#id9">3.1&nbsp;&nbsp;&nbsp;Shell</a></h2>
+<div class="figure">
+<img alt="screenshots/listing-lisps.png" src="screenshots/listing-lisps.png" />
+<p class="caption">If we exit Vim, our Lisp is still active. You can attach from it directly from the command line,
+or from another Vim session.</p>
+</div>
+</div>
+<div class="section" id="freezing-and-thawing">
+<h2><a class="toc-backref" href="#id10">3.2&nbsp;&nbsp;&nbsp;Freezing and Thawing</a></h2>
+<p>You can save your Lisp's state and later restore it. Very handy.</p>
+<div class="figure">
+<img alt="screenshots/save-lisp-and-die.png" src="screenshots/save-lisp-and-die.png" />
+<p class="caption">Here, I've booted up a fresh Lisp and evaluated the function definition.
+Then, <tt class="docutils literal"><span class="pre">&lt;Shift-F12&gt;</span></tt> asks for the path of a file to save the core in.
+The Lisp core is now frozen in time.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/custom-core.png" src="screenshots/custom-core.png" />
+<p class="caption">I quit Vim and opened up a completely empty file, empty.lisp, to really
+point out that I will not evaluate any code from the Lisp file.  Press
+<tt class="docutils literal"><span class="pre">&lt;F12&gt;</span></tt>, Enter, name it &quot;test&quot;, Enter and Limp then asks for a core
+to boot.  Here, input the core we just saved.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/evaluate-saved-code.png" src="screenshots/evaluate-saved-code.png" />
+<p class="caption">With the core booted, we should have the function <tt class="docutils literal"><span class="pre">say-hello</span></tt> available.</p>
+</div>
+<div class="figure">
+<img alt="screenshots/listener-from-core.png" src="screenshots/listener-from-core.png" />
+<p class="caption">Yup. Nice!</p>
+</div>
+</div>
+</div>
+<div class="section" id="usage">
+<h1><a class="toc-backref" href="#id11">4&nbsp;&nbsp;&nbsp;Usage</a></h1>
+<div class="section" id="documentation-lookup">
+<h2><a class="toc-backref" href="#id12">4.1&nbsp;&nbsp;&nbsp;Documentation Lookup</a></h2>
+<p>Example 1:</p>
+<pre class="literal-block">
+(defun fib (n)
+;   ^ cursor here
+  (cond ((or (= n 0)
+             (= n 1)) 1)
+        (t (+ (fib (- n 1))
+           (fib (- n 2))))))
+</pre>
+<p>With the cursor at the indicated spot, &quot;K&quot; (see below) will invoke your
+browser with <a class="reference external" href="file://localhost/path/to/hyperspec/Body/m_defun.htm#defun">file://localhost/path/to/hyperspec/Body/m_defun.htm#defun</a>. This
+may require some configuration of a Perl script, limp-hyperspec.pl.  See
+below.</p>
+<p>Example 2:</p>
+<pre class="literal-block">
+with-
+; ^ cursor here
+</pre>
+<p>With the cursor at the indicated spot, &quot;hp&quot; (see below) will invoke your
+browser with the address of a freshly built index of links to:</p>
+<pre class="literal-block">
+with-accessors
+with-compilation-unit
+with-condition-restarts
+with-hash-table-iterator
+with-input-from-string
+with-open-file
+with-open-stream
+with-output-to-string
+with-package-iterator
+with-simple-restart
+with-slots
+with-standard-io-syntax
+</pre>
+<div class="section" id="configuration">
+<h3>4.1.1&nbsp;&nbsp;&nbsp;Configuration</h3>
+<p>Limp uses a Perl script, <tt class="docutils literal"><span class="pre">limp/bin/limp-hyperspec.pl</span></tt>, for invoking a browser with the documentation.
+I use Opera (www.opera.com), so Limp comes comes pre-configured to use
+it.  I've done some testing with Lynx and Netscape, so uncomment those lines to
+try those browsers.  I haven't gotten Konqueror to work to my satisfaction; if
+you do, please drop me
+an e-mail.</p>
+<p>There are a few configuration parameters you can set in the file to modify the
+default browser and such.</p>
+<dl class="docutils">
+<dt>$BASE</dt>
+<dd>Where you keep your copy of the HyperSpec.
+Defaults to /usr/share/doc/hyperspec.</dd>
+<dt>$browser_name</dt>
+<dd>The name of your browser, assumed findable via your $PATH.  Defaults to
+&quot;opera&quot;.</dd>
+<dt>$external</dt>
+<dd>Will your browser open a new window (e.g. set to 0 to use lynx).  Defaults to 1.</dd>
+<dt>&#64;browser_args</dt>
+<dd><p class="first">Array of string arguments to your browser.
+Opera's &quot;new-page&quot; argument to openURL gives
+each set of HyperSpec search results a new
+page. Other browsers may have analogous flags, and
+similar behavior.</p>
+<p class="last"><tt class="docutils literal"><span class="pre">limp-hyperspec.pl</span></tt> replaces %s in
+&#64;browser_args with the URL to be opened.  See
+the Opera configuration for an example.</p>
+</dd>
+<dt>$READLINE_ON_BROWSER_START</dt>
+<dd>Whether to make you press enter when it starts a browser for the first time.
+Defaults to 0 (i.e. no).</dd>
+</dl>
+<p>The script requires you to have a local copy of the HyperSpec.  It searches
+<tt class="docutils literal"><span class="pre">$BASE/Front/X_Perm_*.htm</span></tt> to find the symbols you want it to look for.  You can
+find a tarball of the CLHS at <a class="reference external" href="http://www.xanalys.com">http://www.xanalys.com</a>.  If you use Debian or a derivative, such as Ubuntu,
+<tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">hyperspec</span></tt> will put the HyperSpec in
+<tt class="docutils literal"><span class="pre">/usr/share/doc/hyperspec</span></tt>.  limp-hyperspec.pl looks for it there, by default.</p>
+</div>
+</div>
+<div class="section" id="completion">
+<h2><a class="toc-backref" href="#id13">4.2&nbsp;&nbsp;&nbsp;Completion</a></h2>
+<div class="section" id="name-completion">
+<h3>4.2.1&nbsp;&nbsp;&nbsp;Name Completion</h3>
+<p>Limp can complete the names of symbols. They tend to be rather long, so it's a useful thing.</p>
+<div class="figure">
+<img alt="screenshots/name-completion.png" src="screenshots/name-completion.png" />
+<p class="caption">First, type this in Vim...</p>
+</div>
+<div class="figure">
+<img alt="screenshots/name-completion-popup.png" src="screenshots/name-completion-popup.png" />
+<p class="caption">Then, hitting ^N (Ctrl-N) will expand <tt class="docutils literal"><span class="pre">least-</span></tt> into
+<tt class="docutils literal"><span class="pre">least-negative-long-float</span></tt> first, then (with another ^N)
+<tt class="docutils literal"><span class="pre">least-positive-long-float</span></tt>, then <tt class="docutils literal"><span class="pre">least-negative-short-float</span></tt>, and so on.</p>
+</div>
+</div>
+<div class="section" id="name-expansion">
+<h3>4.2.2&nbsp;&nbsp;&nbsp;Name Expansion</h3>
+<p>There's a convention to talk about dashed names by abbreviating them into the first letter of each word, e.g.:</p>
+<div class="figure">
+<img alt="screenshots/name-expansion.png" src="screenshots/name-expansion.png" />
+<p class="caption">First, type this in Vim...</p>
+</div>
+<div class="figure">
+<img alt="screenshots/name-expansion-popup.png" src="screenshots/name-expansion-popup.png" />
+<p class="caption">Then, hitting ^N^N (Ctrl-N twice) will expand the <tt class="docutils literal"><span class="pre">p-n</span></tt>
+to <tt class="docutils literal"><span class="pre">package-name</span></tt>.  ^N again will replace <tt class="docutils literal"><span class="pre">package-name</span></tt> with <tt class="docutils literal"><span class="pre">pathname-name</span></tt>,
+and ^N yet again will replace that with <tt class="docutils literal"><span class="pre">pprint-newline</span></tt>.  See Vim help for
+<tt class="docutils literal"><span class="pre">complete</span></tt>, <tt class="docutils literal"><span class="pre">compl-generic</span></tt>, and <tt class="docutils literal"><span class="pre">i_CTRL-X_CTRL-T</span></tt>.  Also, see below for notes on
+this facility.</p>
+</div>
+</div>
+<div class="section" id="notes">
+<h3>4.2.3&nbsp;&nbsp;&nbsp;Notes</h3>
+<ul class="simple">
+<li>Due to the way the Vim thesaurus works, you have to press ^N (Ctrl-N) twice
+to get the first replacement for abbreviations like w-a =&gt; with-accessors,
+but only once after that.  For Vim to know to expand w-a into
+with-accessors, I have to include w-a in the thesaurus file, so w-a expands
+first into just w-a, <em>then</em> with-accessors.  See the lisp-thesaurus file and
+&quot;help i_CTRL-X_CTRL-T&quot;.</li>
+<li>For the multi-word symbols beginning with * and &amp; (e.g. &amp;allow-other-keys),
+you can expand on an abbreviation with or without the leading special
+character (e.g. a-o-k and &amp;a-o-k both expand into &amp;allow-other-keys (if
+you've set iskeyword correctly -- see above)).</li>
+<li>lisp-thesaurus sorts keywords by length, and then alphabetically.  This
+mostly matters when expanding ambiguous abbreviations for multi-word
+symbols.  E.g., c-i expands into char-int, then count-if (which both have
+eight characters), then clear-input (which comes before count-if
+alphabetically, but has eleven characters).</li>
+<li>I generated lisp-thesaurus from the HyperSpec with make-lisp-thes.pl.
+Figuring it out is left as an exercise to the reader.</li>
+</ul>
+<p>Finally, you should install <a class="reference external" href="http://www.vim.org/scripts/script.php?script_id=1643">SuperTab</a> and and use
+that instead of the default keys used for completion!</p>
+</div>
+</div>
+<div class="section" id="commands">
+<h2><a class="toc-backref" href="#id14">4.3&nbsp;&nbsp;&nbsp;Commands</a></h2>
+<p>Limp defines a buffer-level command, <tt class="docutils literal"><span class="pre">:Eval</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">:Eval</span> <span class="pre">&lt;sexp&gt;</span></tt> will evaluate an s-exp, e.g.:</p>
+<pre class="literal-block">
+:Eval (format t &quot;Hello, world!~%&quot;)
+</pre>
+<p>Limp mode is automatically set when evaluating the following:</p>
+<pre class="literal-block">
+:set filetype=lisp
+</pre>
+<p>Useful for editing files not automatically detected as Lisp files (such as
+.asd-files, <tt class="docutils literal"><span class="pre">$HOME/.sbclrc</span></tt>, etc.)</p>
+<div class="section" id="gvim-notes">
+<h3>4.3.1&nbsp;&nbsp;&nbsp;GVim notes</h3>
+<p>The default behaviour when running gvim is to open an xterm.  There are two
+flags you can adjust:</p>
+<dl class="docutils">
+<dt>b:listener_always_open_window</dt>
+<dd>Open a separate xterm even if running console vim</dd>
+<dt>b:listener_keep_open</dt>
+<dd>Open the xterm in the background. Will not prevent you from pressing F12
+multiple times (and thus open many xterms).</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="keyboard-reference">
+<h2><a class="toc-backref" href="#id15">4.4&nbsp;&nbsp;&nbsp;Keyboard Reference</a></h2>
+<p>The default settings in Limp. All bindings can be easily changed in <tt class="docutils literal"><span class="pre">/path/to/limp/0.3.4/vim/keys.vim</span></tt>.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">&lt;F12&gt;</span></tt></dt>
+<dd>Connect to a running Lisp or start a new Lisp, optionally specifying a core
+file to boot from. When connected, the key will toggle displaying the Lisp
+or Vim.</dd>
+<dt><tt class="docutils literal"><span class="pre">&lt;Control-F12&gt;</span></tt></dt>
+<dd>Disconnect from the current Lisp, which will be active in the background.
+You can re-attach to it using <tt class="docutils literal"><span class="pre">&lt;F12&gt;</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">&lt;Shift-F12&gt;</span></tt></dt>
+<dd>Quit Lisp, optionally saving the core in a file (prompted for).</dd>
+</dl>
+<p>The rest of the bindings assumes <tt class="docutils literal"><span class="pre">&lt;LocalLeader&gt;</span></tt> == &quot;\&quot;, which is the default.
+Some people prefer <tt class="docutils literal"><span class="pre">let</span> <span class="pre">maplocalleader</span> <span class="pre">=</span> <span class="pre">&quot;,&quot;</span></tt>.</p>
+<div class="section" id="listener">
+<h3>4.4.1&nbsp;&nbsp;&nbsp;Listener</h3>
+<p>This is a regular screen session.  Escape is <tt class="docutils literal"><span class="pre">&lt;Ctrl-z&gt;</span></tt>, and <tt class="docutils literal"><span class="pre">&lt;F12&gt;</span></tt> is mapped to
+detach (<tt class="docutils literal"><span class="pre">&lt;Ctrl-z&gt;</span> <span class="pre">d</span></tt>).</p>
+</div>
+<div class="section" id="lisp-interaction">
+<h3>4.4.2&nbsp;&nbsp;&nbsp;Lisp Interaction</h3>
+<p>For sending code to a Lisp.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">\ec</span></tt>: <em>(Evaluate Current)</em>: Evaluate the current form</li>
+<li><tt class="docutils literal"><span class="pre">\et</span></tt>: <em>(Evaluate current Top level form)</em>: Evaluate the currrent form to the top level</li>
+<li><tt class="docutils literal"><span class="pre">\ex</span></tt>: <em>(Evaluate eXpression)</em>: Prompt for arbitrary expression to evaluate</li>
+<li><tt class="docutils literal"><span class="pre">\eb/ec/et</span></tt>: <em>(Evaluate currently selected Block)</em>: Evaluate the currently visual block</li>
+<li><tt class="docutils literal"><span class="pre">\lf</span></tt>: <em>(Load File)</em>: Load the current file in Lisp</li>
+<li><tt class="docutils literal"><span class="pre">\la</span></tt>: <em>(Load Any file)</em>: Load any version (.lisp, .fasl, ...) of this file</li>
+<li><tt class="docutils literal"><span class="pre">\cf</span></tt>: <em>(Compile File)</em>: Compile the current file</li>
+<li><tt class="docutils literal"><span class="pre">\cl</span></tt>: <em>(Compile and Load)</em>: Compile current file and load</li>
+<li><tt class="docutils literal"><span class="pre">\ar</span></tt>: <em>(Abort Reset)</em>: Send <tt class="docutils literal"><span class="pre">ABORT</span></tt> to Lisp</li>
+<li><tt class="docutils literal"><span class="pre">\ai</span></tt> :<em>(Abort Interrupt)</em>: Send C-c to Lisp</li>
+</ul>
+</div>
+<div class="section" id="s-exp-manipulation">
+<h3>4.4.3&nbsp;&nbsp;&nbsp;S-Exp Manipulation</h3>
+<p>Source transformation.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">\mt</span></tt>: <em>(Mark Top)</em>: Mark the current form to the top level</li>
+<li><tt class="docutils literal"><span class="pre">\fc</span></tt>: <em>(Format Current)</em>: Reindent/format current form</li>
+<li><tt class="docutils literal"><span class="pre">\ft</span></tt>: <em>(Format current Top level form)</em>: Reindent/format current form to the top level</li>
+<li><tt class="docutils literal"><span class="pre">\sw</span></tt>: <em>(S-exp Wrap)</em>: Wrap the current form inside another list</li>
+<li><tt class="docutils literal"><span class="pre">\sp</span></tt>: <em>(S-exp Peel)</em>: Peel off a list around the current s-exp</li>
+<li><tt class="docutils literal"><span class="pre">\sc</span></tt> :<em>(S-exp Comment top)</em>: Comment top form</li>
+<li><tt class="docutils literal"><span class="pre">\sC</span></tt> :<em>(S-exp comment Current)</em>: Comment current form</li>
+<li><tt class="docutils literal"><span class="pre">(,</span> <span class="pre">)</span></tt>: Go to previous/next s-exp</li>
+<li><tt class="docutils literal"><span class="pre">{,</span> <span class="pre">}</span></tt>: Transpose current s-exp backward/forward
+(<strong>Experimental!</strong> <em>Works only for easy cases.</em>)</li>
+</ul>
+</div>
+<div class="section" id="limp">
+<h3>4.4.4&nbsp;&nbsp;&nbsp;Limp</h3>
+<p>Vim interaction.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">\gt</span></tt>: <em>(Goto Test)</em>: Goto the test buffer</li>
+<li><tt class="docutils literal"><span class="pre">\gs</span></tt>: <em>(Goto Scratch)</em>: Goto the scratch buffer (where the latest evaluated form is)</li>
+<li><tt class="docutils literal"><span class="pre">\gl</span></tt>: <em>(Goto Last)</em>: Goto the last buffer</li>
+<li><tt class="docutils literal"><span class="pre">\tc</span></tt>: <em>(Test Current)</em>: Send current form to test buffer</li>
+<li><tt class="docutils literal"><span class="pre">\tt</span></tt>: <em>(Test Top)</em>: Send top-level form to test buffer</li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<h3>4.4.5&nbsp;&nbsp;&nbsp;Documentation</h3>
+<p>Looks things up in the HyperSpec, by opening a browser pointing to a local copy of the HyperSpec.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">\hd</span></tt>: <em>(Help Describe)</em>: Describe the current symbol in the Lisp listener</li>
+<li><tt class="docutils literal"><span class="pre">\he</span></tt>: <em>(Help Exact)</em>: Lookup exact symbol</li>
+<li><tt class="docutils literal"><span class="pre">\hp</span></tt>: <em>(Help Prefix)</em>: Lookup symbol as prefix</li>
+<li><tt class="docutils literal"><span class="pre">\hs</span></tt>: <em>(Help Prefix)</em>: Lookup symbol as suffix</li>
+<li><tt class="docutils literal"><span class="pre">\hg</span></tt>: <em>(Help Grep)</em>: Lookup symbol by greping through all symbols</li>
+<li><tt class="docutils literal"><span class="pre">\hi</span></tt>: <em>(Help Index)</em>: Go the the index page of the first letter of the current word.  E.g., if you have the cursor on &quot;member&quot; and type hi, takes you to the Permuted Symbol Index (M) page.</li>
+<li><tt class="docutils literal"><span class="pre">\hI</span></tt>: <em>(Help Index page)</em>: Takes you to the Alphabetical Symbol Index &amp; Permuted Symbol Index page.</li>
+</ul>
+<p>Moreover, <tt class="docutils literal"><span class="pre">K</span></tt> works as expected, doing an exact matching.</p>
+</div>
+<div class="section" id="brackets">
+<h3>4.4.6&nbsp;&nbsp;&nbsp;Brackets</h3>
+<p>When typing an opening bracket, paren or double-quote, it automatically adds the closing
+bracket. You can now either type the closing symbol yourself or skip it
+altogether.  Backspacing over it removes the pair.</p>
+</div>
+<div class="section" id="os-x-notes">
+<h3>4.4.7&nbsp;&nbsp;&nbsp;OS X Notes</h3>
+<p>Depending on your keyboard preferences, you might have to press
+<tt class="docutils literal"><span class="pre">Cmd-(Shift-)F12</span></tt>.  Also, <tt class="docutils literal"><span class="pre">Ctrl-F12</span></tt> seems to be chomped by the system, so
+you'll have to change <tt class="docutils literal"><span class="pre">vim/limp.vim</span></tt> to use something else than <tt class="docutils literal"><span class="pre">&lt;C-F12&gt;</span></tt> for
+disconnect. (Or, you can simply quit Vim; that'll have the same effect.)</p>
+<p>Also, if Vim doesn't say you're connected after booting Lisp, you might have
+to set the proper location to SBCL/SBCL_HOME in <tt class="docutils literal"><span class="pre">bin/lisp.sh</span></tt>.</p>
+</div>
+<div class="section" id="useful-vim-commands">
+<h3>4.4.8&nbsp;&nbsp;&nbsp;Useful Vim Commands</h3>
+<p>Vim comes with support for a few useful things out-of-the-box. You should try
+these out:</p>
+<dl class="docutils">
+<dt>[&lt;CTRL-I&gt;</dt>
+<dd>Jump to the definition of the word under the cursor</dd>
+<dt>[I</dt>
+<dd>Display all lines containing the word under the cursor.</dd>
+</dl>
+<p>Exuberant Ctags works perfectly well for Lisp source code, so you can use the
+tag system to navigate in your Lisp source code. For non-US keyboards, the
+default keybinding can be impossible to type in. Here's a better mapping,
+<tt class="docutils literal"><span class="pre">&lt;Ctrl-Space&gt;</span></tt> (... which generates C-&#64;):</p>
+<pre class="literal-block">
+map &lt;C-&#64;&gt; &lt;C-]&gt;
+</pre>
+</div>
+</div>
+</div>
+<div class="section" id="changelog">
+<h1><a class="toc-backref" href="#id16">5&nbsp;&nbsp;&nbsp;Changelog</a></h1>
+<div class="section" id="version-0-3-3">
+<h2><a class="toc-backref" href="#id17">5.1&nbsp;&nbsp;&nbsp;Version 0.3.3</a></h2>
+<ul class="simple">
+<li>2008-05-23 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li>CompileFile/CompileAndLoadFile now saves the file before telling Lisp to
+load it (#4).</li>
+</ul>
+</li>
+<li>2008-05-20 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li>New command, <tt class="docutils literal"><span class="pre">:Eval</span></tt>, same functionality as <tt class="docutils literal"><span class="pre">\ex</span></tt>.</li>
+<li>Easier keyboard configuration (keys.vim)</li>
+</ul>
+</li>
+<li>2008-05-19 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li>It is now a Lisp filetype plugin, so Limp will start automatically for
+Lisp files. (<tt class="docutils literal"><span class="pre">set</span> <span class="pre">filetype=lisp</span></tt>)</li>
+</ul>
+</li>
+<li>2008-05-15 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li>Configurable location of SBCL in lisp.sh</li>
+<li>Updated documentation about Cmd for Fn-keys in OS X</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-3-2">
+<h2><a class="toc-backref" href="#id18">5.2&nbsp;&nbsp;&nbsp;Version 0.3.2</a></h2>
+<ul class="simple">
+<li>2008-04-28 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li><strong>ADDED</strong>: TODO file in the distro.</li>
+<li><em>FIXED</em>: Last occurance of &quot;Lim&quot; found in the HyperSpec helper. Now
+documentation should work properly.</li>
+<li>TWEAK: Only change colorscheme and nocompatible when not previously set.</li>
+</ul>
+</li>
+<li>2008-04-27 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li><em>FIXED</em>: Connect-or-boot, without a name given to boot.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-3-1">
+<h2><a class="toc-backref" href="#id19">5.3&nbsp;&nbsp;&nbsp;Version 0.3.1</a></h2>
+<ul class="simple">
+<li>2008-04-27 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li><em>FIXED</em>: Stray LIMRUNTIME.  Could make Limp connect to the wrong Lisp if both
+LIMRUNTIME and LIMPRUNTIME was set and pointing at different locations.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-3">
+<h2><a class="toc-backref" href="#id20">5.4&nbsp;&nbsp;&nbsp;Version 0.3</a></h2>
+<ul class="simple">
+<li>2008-04-26 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li><strong>ADDED</strong>: Optionally specify core at startup and shutdown.</li>
+<li><strong>ADDED</strong> Added &quot;quit Lisp&quot; mapping on Shift-F12 and removed the <tt class="docutils literal"><span class="pre">\aq</span></tt> mapping.</li>
+<li><em>FIXED</em>: (Hopefully) fixed lisp.sh to work on OS X and other non-GNU systems. Thanks to Nico Weber for patches!</li>
+<li>TWEAK: Renamed Lim to Limp.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-2-2">
+<h2><a class="toc-backref" href="#id21">5.5&nbsp;&nbsp;&nbsp;Version 0.2.2</a></h2>
+<ul class="simple">
+<li>2008-04-26 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li><em>FIXED</em>: Typo in HyperSpec lookup code</li>
+<li>TWEAK: Updated documentation</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-2-1">
+<h2><a class="toc-backref" href="#id22">5.6&nbsp;&nbsp;&nbsp;Version 0.2.1</a></h2>
+<ul class="simple">
+<li>2008-04-26 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li><em>FIXED</em>: Fixed copy-paste typo for 'Goto Last'</li>
+<li>TWEAK: Better connection status information</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-2">
+<h2><a class="toc-backref" href="#id23">5.7&nbsp;&nbsp;&nbsp;Version 0.2</a></h2>
+<ul class="simple">
+<li>2008-04-25 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;<ul>
+<li><strong>ADDED</strong>: Replaced the Perl funnel betwen Vim and Lisp with screen.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="version-0-1">
+<h2><a class="toc-backref" href="#id24">5.8&nbsp;&nbsp;&nbsp;Version 0.1</a></h2>
+<ul>
+<li><p class="first">2008-04-21 by Mikael Jansson &lt;<a class="reference external" href="mailto:mail&#37;&#52;&#48;mikael&#46;jansson&#46;be">mail<span>&#64;</span>mikael<span>&#46;</span>jansson<span>&#46;</span>be</a>&gt;</p>
+<p>Internal release</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="known-issues">
+<h1><a class="toc-backref" href="#id25">6&nbsp;&nbsp;&nbsp;Known Issues</a></h1>
+<ul class="simple">
+<li>When the Lisp disappears, no warning is given when trying to send code to it
+(you will get an error message, though). When that happens, disconnect
+(<tt class="docutils literal"><span class="pre">&lt;Control-F12&gt;</span></tt>) and reconnect.</li>
+</ul>
+</div>
+<div class="section" id="authors">
+<h1><a class="toc-backref" href="#id26">7&nbsp;&nbsp;&nbsp;Authors</a></h1>
+<dl class="docutils">
+<dt>Mikael Jansson</dt>
+<dd>Main developer, more info at <a class="reference external" href="http://mikael.jansson.be">http://mikael.jansson.be</a></dd>
+</dl>
+<div class="section" id="includes-work-by">
+<h2><a class="toc-backref" href="#id27">7.1&nbsp;&nbsp;&nbsp;Includes Work By</a></h2>
+<dl class="docutils">
+<dt>Larry Clapp</dt>
+<dd>Without his hard work on <a class="reference external" href="http://www.vim.org/scripts/script.php?script_id=221">VIlisp</a>, this would never have happened.</dd>
+<dt>Karl Guertin</dt>
+<dd>For <a class="reference external" href="http://www.vim.org/scripts/script.php?script_id=1849">AutoClose</a>.
+Small patch applied to enable/disable instead of toggling.</dd>
+<dt>Charles E. Campbell, Jr.</dt>
+<dd>For <a class="reference external" href="http://www.vim.org/scripts/script.php?script_id=1435">HiMtchBrkt</a>.
+Modified to highlight the contents inside the brackets, removed Vim (&lt;7.x)
+backward compatibility.</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+Document generated from $HeadURL: <a class="reference external" href="https://svn.jansson.be/public/limp/tag/0.3.4/docs/index.txt">https://svn.jansson.be/public/limp/tag/0.3.4/docs/index.txt</a> $
+</div>
+</body>
+</html>
